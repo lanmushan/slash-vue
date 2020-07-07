@@ -1,6 +1,6 @@
 <!--自定义弹出框，方便以后全局扩展-->
 <template>
-  <el-dialog :close-on-click-modal="false" :before-close="handleClose" :title="title" :visible.sync="openCardDialog"
+  <el-dialog :close-on-click-modal="false" :before-close="handleClose" :title="title" :visible.sync="openDialog"
              class="dialog-custom-class" transition="fade-in-linear" :width="width">
     <div class="modal-content" element-loading-spinner="el-icon-loading" element-loading-text="正在努力加载中" lock-scroll="true" v-loading="loading">
       <div style="background: white">
@@ -8,8 +8,8 @@
       </div>
     </div>
     <span class="dialog-footer" slot="footer">
-            <el-button>关  闭</el-button>
-            <el-button type="primary" :disabled="loading" @click="onSubmit">提  交</el-button>
+            <el-button @click="closeDialog()" >关  闭</el-button>
+            <el-button type="primary" :disabled="loading" v-show="readOnly"  @click="onSubmit">提  交</el-button>
     </span>
   </el-dialog>
 </template>
@@ -30,12 +30,12 @@
       setTimeout(() => this.loading = false, 200)
     },
     computed: {
-      openCardDialog: {
+      openDialog: {
         get() {
           return this.visible
         },
         set(val) {
-          this.$emit('update:visible', val) // openCardDialog改变的时候通知父组件
+          this.$emit('update:visible', val) // openDialog
         }
       },
       successSubmitFormEventListener:{
@@ -79,7 +79,10 @@
           message:data.msg,
           type: 'success'
         });
-        this.openCardDialog=false;
+        this.openDialog=false;
+      },
+      closeDialog(){
+        this.openDialog=false;
       },
       handleClose (done) {
         this.visible = false
@@ -91,6 +94,10 @@
       formKey:{
         type:String,
         default:"currentForm"
+      },
+      readOnly:{
+        type:Boolean,
+        default:false
       },
       title: {
         type: String,

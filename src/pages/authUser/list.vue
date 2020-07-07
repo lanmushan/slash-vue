@@ -42,8 +42,7 @@
                       <el-input v-model="queryParam.idCard" placeholder="请输入证件号"></el-input>
                     </el-form-item>
                     <el-form-item label="关键字">
-                      <el-input v-model="queryParam.searchKey" placeholder="请输入用户名、手机号,账号等"
-                                @change="querySearch"></el-input>
+                      <el-input v-model="queryParam.searchKey" placeholder="请输入用户名、手机号,账号等" @change="querySearch"></el-input>
                     </el-form-item>
                     <el-form-item>
                       <el-button type="primary" @click="querySearch">查询</el-button>
@@ -51,7 +50,7 @@
                   </el-form>
                 </el-row>
                 <el-row>
-                  <el-button type="primary" @click="showModal(true)">新增</el-button>
+                  <el-button type="primary" @click="onEditModal(false)">新增</el-button>
                   <el-button type="success">修改</el-button>
                   <el-button type="danger">删除</el-button>
                   <el-button type="default">导入</el-button>
@@ -60,30 +59,18 @@
               </dy-panel-body>
               <dy-panel-body v-loading="loading">
                 <el-table :data="tableList" border style="width: 100%;text-align: center" @sort-change="sortTable">
-                  <el-table-column type="selection"
-                                   prop="date"
-                                   label="序号"
-                                   width="30" align="center">
-                  </el-table-column>
-                  <el-table-column style="padding: 0px !important;"
-                                   prop="headImgAddress"
-                                   label="头像"
-                                   width="60" align="center">
+                  <el-table-column type="selection" prop="date" label="序号" width="30" align="center"></el-table-column>
+                  <el-table-column style="padding: 0px !important;" prop="headImgAddress" label="头像" width="60" align="center">
                     <template slot-scope="scope">
                       <div class="demo-basic--circle">
                         <!--<el-avatar :size="small" :src="circleUrl"></el-avatar>-->
                       </div>
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    prop="account"
-                    label="账号"
-                    width="180" align="center">
-                  </el-table-column>
-                  <el-table-column prop="nickName" label="昵称" width="120" align="center">
-                  </el-table-column>
-                  <el-table-column prop="username" label="姓名" width="120">
-                  </el-table-column>
+
+                  <el-table-column prop="account" label="账号" width="140" align="center"></el-table-column>
+                  <el-table-column prop="nickName" label="昵称" width="120" align="center"></el-table-column>
+                  <el-table-column prop="username" label="姓名" width="120"></el-table-column>
                   <el-table-column prop="sex" label="性别" align="center" width="80" :sortable="'custom'">
                     <template slot-scope="scope">
                       <sapn>{{scope.row.sex==1?'男':'女'}}</sapn>
@@ -95,36 +82,29 @@
                       <!--<span v-for="it in scope.row.authTbRoleList">{{it.roleName}}|</span>-->
                     </template>
                   </el-table-column>
-                  <el-table-column prop="phone" label="联系电话" width="100">
-                  </el-table-column>
-                  <el-table-column prop="email" label="联系邮箱" width="140" cell-class-name="cell-style">
-                  </el-table-column>
+                  <el-table-column prop="phone" label="联系电话" width="100"></el-table-column>
+                  <el-table-column prop="email" label="联系邮箱" width="140" cell-class-name="cell-style"></el-table-column>
                   <el-table-column prop="isLock" label="锁定" align="center" width="80">
                     <template slot-scope="scope">
                       <el-tag :type="scope.row.isLock==1?'danger':''" effect="dark">{{scope.row.isLock==1?'禁用':'正常'}}
                       </el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="createTime" label="注册时间" width="140" cell-class-name="cell-style"
-                                   align="center">
+                  <el-table-column prop="createTime" label="注册时间" width="140" cell-class-name="cell-style" align="center">
                   </el-table-column>
-                  <el-table-column
-                    prop="id"
-                    label="操作" width="160">
+                  <el-table-column prop="id" label="操作" width="160">
                     <template slot-scope="scope">
-                      <el-link style="margin-right: 10px" type="primary">编辑</el-link>
+                      <el-link style="margin-right: 10px" @click="onEditModal(false,scope.row)" type="primary">编辑</el-link>
                       <el-link style="margin-right: 10px" type="primary">重置密码</el-link>
                     </template>
                   </el-table-column>
                 </el-table>
                 <div class="block" style="text-align: right;margin-top: 10px">
                   <el-pagination
-                    background
-                    @current-change="querySearch"
-                    @size-change="changePageSize"
-                    :current-page="queryParam.currentPage"
+                    background="background"
+                    :current-page.sync="queryParam.currentPage"
                     :page-sizes="[5, 10, 20, 50]"
-                    :page-size="queryParam.pageSize"
+                    :page-size.sync="queryParam.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="tableTotal">
                   </el-pagination>
@@ -136,8 +116,8 @@
       </el-col>
     </el-row>
     <el-row>
-      <dy-modal  v-if="visible" :visible.sync="visible" form-key="11111">
-          <user-update form-key="11111" :roleList="roleList" :deptList="deptList"></user-update>
+      <dy-modal :read-only="modalReadOnly"  v-if="visible" :visible.sync="visible" form-key="11111">
+        <user-update :data="modalData" form-key="11111" :roleList="roleList" :deptList="deptList"></user-update>
       </dy-modal>
     </el-row>
   </div>
@@ -151,7 +131,8 @@
   import authTbUserApi from '@/apis/auth/authTbUserApi.js'
   import authTbDeptApi from '@/apis/auth/authTbDeptApi.js'
   import authTbRoleApi from '@/apis/auth/authTbRoleApi.js'
-  import  UserUpdate from "@/pages/authUser/update.vue"
+  import UserUpdate from '@/pages/authUser/update.vue'
+
   export default {
     name: 'list',
     components: {
@@ -163,12 +144,15 @@
     },
     data () {
       return {
+        modalReadOnly:true,
+        modalData:{},
         visible: false,
         loading: true,
         queryParam: {
           currentPage: 1,
           pageSize: 10
         },
+        selectIds:[],
         deptFilter: '',
         roleList: [],
         deptList: [],
@@ -185,22 +169,28 @@
         this.$refs.tree.filter(val)
       }
     },
-    computed:{
+    computed: {
       visible: {
-        get(){
+        get () {
           return this.visible
         },
-        set(val){
-          alert(11);
+        set (val) {
+          alert(11)
         }
       }
     },
     methods: {
-      test(){
-        alert(11)
+      filterNode (value, data) {
+        if (!value) return true
+        return data.deptName.indexOf(value) !== -1
       },
       showModal (state) {
-        this.visible = state;
+        this.visible = state
+      },
+      onEditModal(readOnly,data){
+        this.modalReadOnly=false;
+        this.modalData=this.cloneDeep(data);
+        this.visible = true;
       },
       selectDept (data, node, array) {
         if (data.id === '1') {
@@ -210,14 +200,14 @@
         }
         this.querySearch()
       },
-      filterNode (value, data) {
-        if (!value) return true
-        return data.deptName.indexOf(value) !== -1
-      },
       changePageSize (pageSize) {
         this.queryParam.pageSize = pageSize
         this.querySearch()
       },
+      // changeCurrentPage (currentPage) {
+      //   this.queryParam.currentPage = currentPage
+      //   this.querySearch()
+      // },
       sortTable (col) {
         this.queryParam.fixed = col.prop
         this.queryParam.sort = (col.order == 'descending' ? 'desc' : 'asc')
@@ -234,7 +224,6 @@
             this.loading = false
           }, 200)
         })
-
       }
     },
     created () {
@@ -258,6 +247,7 @@
   el-table {
     background: red;
   }
+
   .cell-style {
     background: red;
     text-align: center;

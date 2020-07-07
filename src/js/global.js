@@ -18,6 +18,9 @@ export default function(){
   Vue.prototype.jump=function (path,title,query) {
      activeTab(path,title)
   };
+  /**
+   *移除Tab
+   */
   Vue.prototype.removeTab=function (targetName) {
     let tabs = store.state.tab.list;
     if(targetName=="welcome")
@@ -25,6 +28,13 @@ export default function(){
       return;
     }
     store.state.tab.list=tabs.filter(tab => tab.name !== targetName);
+  },
+    /**
+     * 深度拷贝
+     */
+  Vue.prototype.cloneDeep=function(templateData) {
+    // templateData 是要复制的数组或对象，这样的数组或者对象就是指向新的地址的
+    return JSON.parse(JSON.stringify(templateData));
   }
  router.beforeEach((to,from,next)=>{
     //activeTab(to.path);

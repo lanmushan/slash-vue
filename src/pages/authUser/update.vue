@@ -44,8 +44,8 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="12">
             <el-form-item label="性别" prop="sex">
-              <el-radio v-model="updateForm.sex" label="1" value="1">男</el-radio>
-              <el-radio v-model="updateForm.sex" label="0" value="0" >女</el-radio>
+              <el-radio v-model="updateForm.sex" :label="1" value="1">男</el-radio>
+              <el-radio v-model="updateForm.sex" :label="0" value="0" >女</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -92,8 +92,8 @@
       <el-row>
         <el-col :xs="24" :sm="12" :md="12">
           <el-form-item label="账户状态" prop="name">
-            <el-radio v-model="updateForm.isLock" label="0">启用</el-radio>
-            <el-radio v-model="updateForm.isLock" label="1">禁用</el-radio>
+            <el-radio v-model="updateForm.isLock" :label="0">启用</el-radio>
+            <el-radio v-model="updateForm.isLock" :label="1">禁用</el-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -118,11 +118,11 @@
           phone: "",
           idCard: '',
           email: '',
-          sex: "0",
+          sex: 1,
           account:"",
           loginPassword:"",
           fkPostId:"",
-          isLock:"0",
+          isLock:0,
           accountType:"default",
           headImgAddress:"",
           roleCodeList:[],
@@ -161,6 +161,11 @@
         }
       }
     },
+    created(){
+      //可能需要特殊处理，手动赋值
+      this.updateForm=this.data;
+      console.log(this.updateForm);
+    },
     methods: {
         submitForm(){
          this.$refs["updateForm"].validate((valid) => {
@@ -192,7 +197,7 @@
           }
         },
         submitFormSuccess(msg){
-          this.$store.commit("successSubmitForm",{name:this.formKey,data:msg})
+          this.$store.commit('successSubmitForm',{name:this.formKey,data:msg})
         },
         cancelSubmitForm(){
           this.$store.commit("cancelSubmitForm",{name:this.formKey})
@@ -205,8 +210,8 @@
                 let fields=this.$refs['updateForm'].fields.filter((it)=>{return it.prop==row.errName});
                 if(fields.length>0)
                 {
-                  fields[0].validateMessage = row.errMsg;
-                  fields[0].validateState = 'error';
+                    fields[0].validateMessage = row.errMsg;
+                    fields[0].validateState = 'error';
                 }
               }
 
@@ -226,6 +231,10 @@
       deptList:{
         type:Array,
         default:[]
+      },
+      data:{
+        type:Array,
+        default:[],
       }
     },
     computed: {
