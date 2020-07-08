@@ -188,7 +188,7 @@
             }).catch((msg)=>{
               if(msg.cdoe=400)
               {
-                this.formError(msg)
+                this.formError(msg);
               }
               this.cancelSubmitForm();
             })
@@ -197,15 +197,15 @@
           }
         },
         submitFormSuccess(msg){
-          this.$store.commit('successSubmitForm',{name:this.formKey,data:msg})
+          this.$store.commit('successSubmitForm',{name:this.formKey,data:msg});
         },
         cancelSubmitForm(){
-          this.$store.commit("cancelSubmitForm",{name:this.formKey})
+          this.$store.commit("cancelSubmitForm",{name:this.formKey});
         },
         formError(msg){
             if(msg.code==HttpCode.HTTP400)
             {
-              for (let row of msg.errors)
+              for (let row of msg.errors);
               {
                 let fields=this.$refs['updateForm'].fields.filter((it)=>{return it.prop==row.errName});
                 if(fields.length>0)
@@ -233,8 +233,8 @@
         default:[]
       },
       data:{
-        type:Array,
-        default:[],
+        type:Object,
+        default:{},
       }
     },
     computed: {

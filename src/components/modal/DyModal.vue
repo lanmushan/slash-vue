@@ -9,7 +9,7 @@
     </div>
     <span class="dialog-footer" slot="footer">
             <el-button @click="closeDialog()" >关  闭</el-button>
-            <el-button type="primary" :disabled="loading" v-show="readOnly"  @click="onSubmit">提  交</el-button>
+            <el-button type="primary" :disabled="loading" v-show="!readOnly"  @click="onSubmit">提  交</el-button>
     </span>
   </el-dialog>
 </template>
