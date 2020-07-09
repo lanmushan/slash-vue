@@ -122,8 +122,6 @@
       </dy-modal>
     </el-row>
   </div>
-
-
 </template>
 <script>
   import {DyPanel, DyPanelHeader} from '@/view/panel'
@@ -187,18 +185,18 @@
        * 查询所有部门
        */
       authTbDeptApi.selectTreeList({}).then((msg) => {
-        this.deptList = msg.rows;
+        this.deptList = msg.rows
       })
       /**
        * 获取可用角色
        */
       authTbRoleApi.selectListByEnabled().then(msg => {
-        this.roleList = msg.rows;
+        this.roleList = msg.rows
       })
       /**
        * 执行列表查询
        * */
-      this.doSearchList();
+      this.doSearchList()
     },
 
     methods: {
@@ -209,27 +207,27 @@
        * @returns {boolean}
        */
       onDeptFilterNodeEvent (value, data) {
-        if (!value) return true;
-        return data.deptName.indexOf(value) !== -1;
+        if (!value) return true
+        return data.deptName.indexOf(value) !== -1
       },
       /**
        * 编辑按钮事件处理
        */
       onEditBtnEvent () {
         if (this.selectRows.length != 1) {
-          return;
+          return
         }
-        this.editModal.readOnly = false;
-        this.editModal.data = this.selectRows[0];
-        this.editModal.visible = true;
+        this.editModal.readOnly = false
+        this.editModal.data = this.selectRows[0]
+        this.editModal.visible = true
       },
       /**
        * 新增按钮事件处理
        */
       onAddBtnEvent () {
-        this.editModal.readOnly = false;
-        this.editModal.data = {};
-        this.editModal.visible = true;
+        this.editModal.readOnly = false
+        this.editModal.data = {}
+        this.editModal.visible = true
       },
       /**
        * 编辑某行事件处理
@@ -237,9 +235,9 @@
        * @param data
        */
       onEditRowEvent (readOnly, data) {
-        this.editModal.readOnly = false;
-        this.editModal.data = this.cloneDeep(data);
-        this.editModal.visible = true;
+        this.editModal.readOnly = false
+        this.editModal.data = this.cloneDeep(data)
+        this.editModal.visible = true
       },
       /**
        * 选中某行事件处理
@@ -248,9 +246,9 @@
       onSelectRowEvent (selection) {
         this.selectRows = selection
         if (this.selectRows.length != 1) {
-          this.operateBtn.editBtn = false;
+          this.operateBtn.editBtn = false
         } else {
-          this.operateBtn.editBtn = true;
+          this.operateBtn.editBtn = true
         }
       },
       /**
@@ -261,20 +259,20 @@
        */
       onSelectDeptEvent (data, node, array) {
         if (data.id === '1') {
-          this.queryParam.deptId = '';
+          this.queryParam.deptId = ''
         } else {
-          this.queryParam.deptId = data.id;
+          this.queryParam.deptId = data.id
         }
-        this.doSearchList();
+        this.doSearchList()
       },
       /**
        * 排序事件处理
        * @param col
        */
       onSortTableEvent (col) {
-        this.queryParam.fixed = col.prop;
-        this.queryParam.sort = (col.order == 'descending' ? 'desc' : 'asc');
-        this.doSearchList();
+        this.queryParam.fixed = col.prop
+        this.queryParam.sort = (col.order == 'descending' ? 'desc' : 'asc')
+        this.doSearchList()
       },
       /**
        * 查询列表业务处理
@@ -283,18 +281,18 @@
         this.loading = true
         authTbUserApi.selectList(this.queryParam).then((msg) => {
           setTimeout(() => {
-            this.tableList = msg.rows;
-            this.tableTotal = msg.total;
-            this.queryParam.currentPage = msg.currentPage;
-            this.loading = false;
-          }, 200);
+            this.tableList = msg.rows
+            this.tableTotal = msg.total
+            this.queryParam.currentPage = msg.currentPage
+            this.loading = false
+          }, 200)
         })
       }
     },
     computed: {},
     watch: {
       deptFilter (val) {
-        this.$refs.tree.filter(val);
+        this.$refs.tree.filter(val)
       }
     },
   }
