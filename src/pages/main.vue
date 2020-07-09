@@ -64,8 +64,19 @@
       </el-aside>
       <el-container>
         <el-header height="40px" style="padding:0px" class="tab-header">
-          <el-tabs @tab-click="tabJump" v-model="editableTabsValue" closable  @tab-remove="removeTab" class="margin">
-            <el-tab-pane  v-for=" (item, index) in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+          <el-tabs
+            @tab-click="tabJump"
+            v-model="editableTabsValue"
+            closable
+            @tab-remove="removeTab"
+            class="margin"
+          >
+            <el-tab-pane
+              v-for=" (item, index) in editableTabs"
+              :key="item.name"
+              :label="item.title"
+              :name="item.name"
+            >
               <span slot="label">
                 <i class="el-icon-date" style="margin-left:10px"></i>
                 {{item.title}}
@@ -85,143 +96,142 @@
   </el-container>
 </template>
 <script>
-  import resourceApi from '@/apis/auth/authTbResourceApi.js'
-  import LeftMenu from '@/components/menu/LeftMenu'
-  export default {
-    components: {LeftMenu},
-    data () {
-
-      return {
-        menuList: [],
-        editableTabsValue: '0',
-        editableTabs: [{
-          name:"11111",
-          title:"我服务经理"
-        }],
-        tabIndex: 2
-      }
-    },
-    created () {
-      resourceApi.selectCurrentUserMenu().then((msg) => {
-        if (msg.code == 200) {
-          for (let row of msg.rows) {
-            if (row.fkParentId == 0) {
-              row.childMenu = this.getChildMenu(row, msg.rows)
-              this.menuList.push(row)
-            }
+import resourceApi from "@/apis/auth/authTbResourceApi.js";
+import LeftMenu from "@/components/menu/LeftMenu";
+export default {
+  components: { LeftMenu },
+  data() {
+    return {
+      menuList: [],
+      editableTabsValue: "0",
+      editableTabs: [
+        {
+          name: "11111",
+          title: "我服务经理"
+        }
+      ],
+      tabIndex: 2
+    };
+  },
+  created() {
+    resourceApi.selectCurrentUserMenu().then(msg => {
+      if (msg.code == 200) {
+        for (let row of msg.rows) {
+          if (row.fkParentId == 0) {
+            row.childMenu = this.getChildMenu(row, msg.rows);
+            this.menuList.push(row);
           }
         }
-
-      })
-    },
-    computed: {
-      secondChange () {
-        this.editableTabs = this.$store.state.tab.list
-        this.editableTabsValue = this.$store.state.tab.active
       }
+    });
+  },
+  computed: {
+    secondChange() {
+      this.editableTabs = this.$store.state.tab.list;
+      this.editableTabsValue = this.$store.state.tab.active;
+    }
+  },
+  watch: {
+    secondChange() {
+      this.editableTabs = this.$store.state.tab.list;
+      this.editableTabsValue = this.$store.state.tab.active;
+    }
+  },
+  methods: {
+    tabJump(obj) {
+      this.jump(obj.name);
     },
-    watch: {
-      secondChange () {
-        this.editableTabs = this.$store.state.tab.list;
-        this.editableTabsValue = this.$store.state.tab.active;
+    //判断是否还有子菜单
+    getChildMenu(row, rows) {
+      var array = [];
+      if (row == undefined) {
+        return array;
       }
-    },
-    methods: {
-      tabJump(obj){
-         this.jump(obj.name);
-      },
-      //判断是否还有子菜单
-      getChildMenu (row, rows) {
-        var array = []
-        if (row == undefined) {
-          return array
+      for (var it of rows) {
+        if (it.fkParentId == row.id) {
+          it.childMenu = this.getChildMenu(it, rows);
+          array.push(it);
         }
-        for (var it of rows) {
-          if (it.fkParentId == row.id) {
-            it.childMenu = this.getChildMenu(it, rows)
-            array.push(it)
-          }
-        }
-        return array
       }
+      return array;
     }
   }
+};
 </script>
 <style scoped>
-  @import "../css/layout.css";
+@import "../css/layout.css";
 
-  .navbar {
-    background: white;
-  }
+.navbar {
+  background: white;
+}
 
-  .header-right-box {
-    padding: 20px !important;
-    float: right;
-  }
-  el-row{
-    background: transparent;
-  }
-  .left-box {
-    background: #304156;
-    overflow-y: scroll;
-    height: 100%;
+.header-right-box {
+  padding: 20px !important;
+  float: right;
+}
+el-row {
+  background: transparent;
+}
+.left-box {
+  background: #304156;
+  overflow-y: scroll;
+  height: 100%;
+}
 
-  }
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
 
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409eff;
-  }
+.el-icon-arrow-down {
+  font-size: 12px;
+}
 
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
+.tac {
+  overflow: hidden;
+  box-sizing: border-box;
+}
 
-  .tac {
-    overflow: hidden;
-    box-sizing: border-box;
-  }
+.el-submenu {
+  overflow: hidden;
+}
 
-  .el-submenu {
-    overflow: hidden;
-  }
+.left-box::-webkit-scrollbar {
+  width: 0px;
+}
 
-  .left-box::-webkit-scrollbar {
-    width: 0px;
-  }
+.container {
+  height: 100%;
+}
 
-  .container {
-    height: 100%;
-  }
+.tab-header {
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08) inset;
+}
 
-  .tab-header {
-    background: white;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08) inset;
-  }
+.footer {
+  height: 30px;
+  background: #cccccc;
+}
 
-  .footer {
-    height: 30px;
-    background: #cccccc;
-  }
+.el-main {
+  padding: 0px;
+  background: #f3f3f4;
+}
 
-  .el-main {
-    padding: 0px;
-    background: #f3f3f4;
-  }
+.el-tabs .el-tab-pane {
+  height: 0px;
+  padding: 0px;
+}
 
-  .el-tabs .el-tab-pane {
-    height: 0px;
-    padding: 0px;
-  }
+.el-tabs--border-card > .el-tabs__content {
+  padding: 0px;
+}
 
-  .el-tabs--border-card > .el-tabs__content {
-    padding: 0px;
-  }
-
-  .logo {
-    color: #409eff;
-    line-height: 60px;
-    padding-left: 20px;
-    text-overflow: inherit;
-  }
+.logo {
+  color: #409eff;
+  line-height: 60px;
+  padding-left: 20px;
+  text-overflow: inherit;
+}
 </style>
