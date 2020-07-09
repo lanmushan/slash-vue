@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VS2 from 'vue-script2'
 import modal from '@/components/modal/'
 import global from './js/global';
+import './css/reset.css'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
