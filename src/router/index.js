@@ -8,7 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'MainPage',
-      component: MainPage
+      component: MainPage,
+      redirect: '/login'
+    },
+    {
+      path: '/login',
+      component: () => import('@/pages/login/login'),
     },
     {
       path: '/welcome',
