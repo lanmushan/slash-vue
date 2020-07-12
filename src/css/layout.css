@@ -335,3 +335,6 @@ div:hover::-webkit-scrollbar-track {/*滚动条里面轨道*/
 tr.select{
     background: rgba(83, 83, 83, 0.1) !important;
 }
+.el-container {
+  min-width: 1200px !important;
+}

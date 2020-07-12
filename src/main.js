@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/display.css';
 import VS2 from 'vue-script2'
 import modal from '@/components/modal/'
 import global from './js/global'

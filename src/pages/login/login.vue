@@ -1,24 +1,28 @@
 <template>
   <div class="login">
     <el-row type="flex" align="middle" class="logo">
-      <i class="el-icon-s-finance icon"></i><span class="name">XXX管理系统</span>
+      <i class="el-icon-s-finance icon"></i>
+      <span class="name">XXX管理系统</span>
     </el-row>
     <el-row type="flex" align="middle" class="container">
-      <el-col :span="12" class="left">
+      <el-col :span="12" class="left hidden-md-and-down">
         <h1>WELCOME</h1>
         <h4>欢迎来到XXX管理系统</h4>
       </el-col>
-      <el-col :span="12">
-        <el-row type="flex" class="login-area">
-          <p><span class="login-title">登录</span></p>
+      <el-col :xs="24" :sm="24" :md="24" :lg="12">
+        <el-row type="flex" class="login-area" :class="{'center' : isCenter}">
+          <p>
+            <span class="login-title">登录</span>
+          </p>
           <p class="user-name">用户名</p>
-          <input type="text">
+          <input type="text" />
           <p class="password">密码</p>
-          <input type="password">
-          <p class="forget"><span>忘记密码</span></p>
+          <input type="password" />
+          <p class="forget">
+            <span>忘记密码</span>
+          </p>
           <button class="submit" @click="login">登录</button>
         </el-row>
-
       </el-col>
     </el-row>
   </div>
@@ -26,14 +30,51 @@
 
 <script>
 export default {
+  data() {
+    return {
+      screenWidth: 0, // 屏幕宽度
+      timer: false,
+      isCenter: false, // 控制右侧登录框是否居中
+    };
+  },
+  mounted() {
+    let screenWidth = document.body.clientWidth
+    this.screenWidth = screenWidth
+    if (screenWidth < 1200) {
+      this.isCenter = true
+    }
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth;
+        this.screenWidth = window.screenWidth;
+      })();
+    };
+  },
+  watch: {
+    screenWidth(val) {
+      // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+      if (!this.timer) {
+        // 一旦监听到的screenWidth值改变，就将其重新赋给data里的screenWidth
+        this.screenWidth = val;
+        if (this.screenWidth < 1200) {
+          this.isCenter = true
+        }
+        this.timer = true;
+        setTimeout(() => {
+          // 打印screenWidth变化的值
+          this.timer = false;
+        }, 500);
+      }
+    }
+  },
   methods: {
     login() {
-      this.$router.push({path: '/welcome'})
+      this.$router.push({ path: "/welcome" });
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-@import url('./login.less');
+@import url("./login.less");
 </style>

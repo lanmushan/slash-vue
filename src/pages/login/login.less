@@ -5,6 +5,10 @@
 	@color: #b8c4ce;
 	letter-spacing: 2px;
 
+	.center {
+		margin: 0 auto;
+	}
+
 	input {
 		border: none;
 		border-bottom: 2px solid rgba(184, 196, 206, .18);
@@ -35,7 +39,7 @@
 		width: 300px;
 		height: 400px;
 		border-radius: 10px;
-		box-shadow: 0 0 4px 2px rgba(217,222,234,.3);
+		box-shadow: 0 0 4px 2px rgba(217, 222, 234, .3);
 		padding: 40px;
 		background-color: #fff;
 		transition: all 1s ease;
@@ -46,7 +50,7 @@
 		}
 
 		p:nth-child(1) {
-			margin-bottom: 40px
+			margin-bottom: 40px;
 		}
 
 		.login-title {
@@ -58,10 +62,12 @@
 			border-bottom: 2px solid #552da9;
 		}
 
-		.user-name, .password, .forget {
+		.user-name,
+		.password,
+		.forget {
 			color: @color;
 		}
-		
+
 		.forget {
 			text-align: right;
 			span {
@@ -77,7 +83,7 @@
 			border-radius: 30px;
 			color: #fff;
 			letter-spacing: 4px;
-			background: linear-gradient(to right, #3a21adeb, #9458F8);
+			background: linear-gradient(to right, #3a21adeb, #9458f8);
 			cursor: pointer;
 			outline: none;
 		}
@@ -103,5 +109,4 @@
 		color: #e6e6e6;
 		letter-spacing: 2px;
 	}
-
 }
