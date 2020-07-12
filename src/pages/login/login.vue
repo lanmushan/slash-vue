@@ -28,7 +28,7 @@
 export default {
   methods: {
     login() {
-      this.$router.push({path: '/'})
+      this.$router.push({path: '/welcome'})
     }
   }
 }

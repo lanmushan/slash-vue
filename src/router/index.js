@@ -7,12 +7,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'MainPage',
-      component: MainPage,
-      redirect: '/login'
-    },
-    {
-      path: '/login',
       component: () => import('@/pages/login/login'),
     },
     {

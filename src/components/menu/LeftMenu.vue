@@ -1,10 +1,8 @@
 <template>
   <div>
     <el-menu
-      default-active="2"
+      :default-active="defaultActive"
       class="el-menu-vertical-demo left-nav-box"
-      @open="handleOpen"
-      @close="handleClose"
       background-color="#304156"
       text-color="#fff"
       active-text-color="#409eff"
@@ -49,8 +47,16 @@
 <script>
 export default {
   name: "LeftMenu",
+  data() {
+    return {
+      defaultActive: '0',
+    }
+  },
   props: {
-    menuList: []
+    menuList: {
+      type: Array,
+      default: [],
+    }
   }
 };
 </script>

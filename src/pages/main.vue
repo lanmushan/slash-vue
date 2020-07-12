@@ -11,7 +11,6 @@
               :default-active="activeIndex"
               class="el-menu-demo"
               mode="horizontal"
-              @select="handleSelect"
             >
               <el-menu-item index="1">处理中心</el-menu-item>
               <el-submenu index="2">
@@ -28,7 +27,7 @@
               </el-submenu>
               <el-menu-item index="3" disabled>消息中心</el-menu-item>
               <el-menu-item index="4">
-                <a href="https://www.ele.me" target="_blank">订单管理</a>
+                <a>订单管理</a>
               </el-menu-item>
             </el-menu>
           </div>
@@ -58,7 +57,7 @@
       <el-aside class="left-box" v-show="true" width="200px">
         <el-row class="tac">
           <el-col :span="24">
-            <left-menu :menuList="this.menuList"></left-menu>
+            <left-menu :menuList="menuList"></left-menu>
           </el-col>
         </el-row>
       </el-aside>
@@ -86,7 +85,7 @@
         </el-header>
         <el-main>
           <transition name="fade">
-            <keep-alive :include="keepAlive">
+            <keep-alive>
               <router-view style="background:#f3f3f4;"></router-view>
             </keep-alive>
           </transition>
@@ -102,6 +101,7 @@ export default {
   components: { LeftMenu },
   data() {
     return {
+      activeIndex: '0',
       menuList: [],
       editableTabsValue: "0",
       editableTabs: [
