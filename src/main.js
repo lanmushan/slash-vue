@@ -11,6 +11,9 @@ import VS2 from 'vue-script2'
 import modal from '@/components/modal/'
 import global from './js/global'
 import './css/reset.css'
+import md5 from 'js-md5'
+
+Vue.prototype.$md5 = md5
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })

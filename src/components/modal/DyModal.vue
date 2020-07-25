@@ -33,7 +33,6 @@ export default {
   data() {
     return {
       loading: true,
-      url: "@/components/HelloWorld.vue",
       visible: false
     };
   },

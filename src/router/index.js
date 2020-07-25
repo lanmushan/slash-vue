@@ -26,7 +26,7 @@ export default new Router({
       component:MainPage,
       children:[
         {
-          path:'index',
+          path: 'list',
           component: () => import('@/pages/authUser/list')
         }
       ]
@@ -37,7 +37,7 @@ export default new Router({
       component:MainPage,
       children:[
         {
-          path:'index',
+          path: 'list',
           component: () => import('@/pages/authUser/list')
         }
       ]

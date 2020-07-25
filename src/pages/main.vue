@@ -3,7 +3,7 @@
     <el-header class="navbar" height="60px" style="padding:0px">
       <el-row style>
         <el-col :span="3">
-          <h3 class="logo">DAIYU后端管理平台</h3>
+          <h3 class="logo">SLASH管理平台</h3>
         </el-col>
         <el-col :span="17">
           <div class="grid-content bg-purple-dark">

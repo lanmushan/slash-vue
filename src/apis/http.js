@@ -1,37 +1,56 @@
 import axios from 'axios'
-import Notification from 'element-ui'
+import {Notification} from 'element-ui'
+import loginApi from '@/apis/loginApi.js'
+import HttpCode from '@/js/httpCode.js'
 
 axios.defaults.timeout = 500000
-axios.defaults.baseURL = 'http://127.0.0.1:8001/api'
-/** 请求拦截器 */
+axios.defaults.baseURL = 'http://127.0.0.1:8080/api'
+axios.defaults.withCredentials = true
+/** 请求拦截器
+ *  在header添加authorization
+ * */
 axios.interceptors.request.use(function (param) {
-  console.log(param)
-  console.log(`请求拦截器${param}`)
+  console.log(loginApi.getToken())
+  if (loginApi.getToken() != undefined) {
+    param.headers['authorization'] = loginApi.getToken()
+  }
   return param
 }, function (error) {
   // 请求错误
   return Promise.reject(error)
 })
 
-// 添加响应拦截器
+/**
+ * 响应拦截器
+ * 对响应状态码等进行判断处理
+ */
 axios.interceptors.response.use(function (response) {
-  console.log('响应拦截成功')
-  var msg = response.data
-  if (msg.code == 200 || msg.code == 204) {
-    console.log(111)
-    return msg
-  } else if (msg.code != 200 && msg.code != 204) {
-    Notification.error({
-      title: msg.code,
-      message: msg.msg
-    })
-    return Promise.reject(msg)
+  let msg = response.data
+  switch (msg.code) {
+    case HttpCode.OK:
+    case HttpCode.E204: {
+      return msg
+    }
+    case HttpCode.D600: {
+      window.location.href = '/'
+    }
+    default: {
+      Notification.error({
+        title: msg.code,
+        message: msg.msg
+      })
+      return Promise.reject(msg)
+    }
   }
 
 }, function (error) {
   // 响应错误
   return Promise.reject(error)
 })
+/**
+ * 封装GET和POST方法
+ * @type {{doPost: (function(*=, *=): Promise<AxiosResponse<T>>), doGet: (function(*=, *=): Promise<AxiosResponse<T>>)}}
+ */
 const api =
   {
     doPost: (url, data) => {

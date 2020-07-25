@@ -364,14 +364,6 @@ export default {
 };
 </script>
 <style>
-el-table {
-  background: red;
-}
-
-.cell-style {
-  background: red;
-  text-align: center;
-}
 
 .is-current.el-tree-node:focus > .el-tree-node__content {
   background: #409eff;
