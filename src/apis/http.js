@@ -5,7 +5,6 @@ import HttpCode from '@/js/httpCode.js'
 
 axios.defaults.timeout = 500000
 axios.defaults.baseURL = 'http://127.0.0.1:8080/api'
-axios.defaults.withCredentials = true
 /** 请求拦截器
  *  在header添加authorization
  * */

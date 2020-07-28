@@ -43,6 +43,7 @@
         logging: false,
         verificationCodeImgLoading: true,
         verificationCodeImgSrc: '',
+        verificationCodeUid: '',
         loginForm: {
           account: 'admin',
           password: '123456',
@@ -85,7 +86,8 @@
         this.verificationCodeImgLoading = true
         loginApi.selectVerificationCode().then((msg) => {
           setTimeout(() => {
-            this.verificationCodeImgSrc = msg.row
+            this.verificationCodeImgSrc = msg.row.img
+            this.verificationCodeUid = msg.row.uid
             this.verificationCodeImgLoading = false
           }, 200)
         })
