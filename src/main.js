@@ -12,6 +12,7 @@ import modal from '@/components/modal/'
 import global from './js/global'
 import './css/reset.css'
 import md5 from 'js-md5'
+import VueCodemirror from 'vue-codemirror'
 
 Vue.prototype.$md5 = md5
 
@@ -20,6 +21,7 @@ Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 Vue.use(global)
 Vue.use(VS2)
 Vue.use(modal)
+Vue.use(VueCodemirror)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

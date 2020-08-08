@@ -6,6 +6,7 @@
       ref="input"
       :value="textValue"
       @focus="onFocus"
+      @blur="onBlur"
       clearable
     ></el-input>
     <div class="select-tree-body" v-show="treeShow" ref="treeBox">
@@ -23,64 +24,66 @@
   </div>
 </template>
 <script>
-export default {
-  name: "HelloWorld",
-  data() {
-    return {
-      treeList: [],
-      textValue: "11",
-      treeShow: false,
-      msg: "Welcome to Your Vue.js App"
-    };
-  },
-  methods: {
-    onFocus: function() {
-      this.treeShow = true;
+  export default {
+    name: 'HelloWorld',
+    data () {
+      return {
+        treeList: [],
+        textValue: '11',
+        treeShow: false,
+        msg: 'Welcome to Your Vue.js App'
+      }
     },
-    onBlur: function() {
-      this.treeShow = false;
-    },
-    selectNode: function(data, node, array) {
-      this.textValue = data[this.props.label];
-      this.treeShow = false;
-    }
-  },
-  props: {
-    placeholder: {
-      type: String,
-      default: ""
-    },
-    treeList: {
-      type: Array,
-      default: []
+    methods: {
+      onFocus: function () {
+        this.treeShow = true
+      },
+      onBlur: function () {
+        this.treeShow = false
+      },
+      selectNode: function (data, node, array) {
+        this.textValue = data[this.props.label]
+        this.treeShow = false
+      }
     },
     props: {
-      type: Object,
-      default: {
-        children: "children",
-        label: "deptName"
+      placeholder: {
+        type: String,
+        default: ''
+      },
+      treeList: {
+        type: Array,
+        default: []
+      },
+      props: {
+        type: Object,
+        default: {
+          children: 'children',
+          label: 'deptName'
+        }
       }
     }
   }
-};
 </script>
 <style scoped>
-.select-tree-body {
-  z-index: 9999;
-  position: absolute;
-  left: 0px;
-  top: 35px;
-  border: 1px solid #c1c3c4;
-  width: 100%;
-  height: 200px;
-  clear: both;
-  overflow-y: scroll;
-}
-.select-tree-body::-webkit-scrollbar {
-  width: 0 !important;
-}
-.select-tree-body::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0;
-}
+  .select-tree-body {
+    z-index: 9999;
+    position: absolute;
+    left: 0px;
+    top: 35px;
+    border: 1px solid #c1c3c4;
+    width: 100%;
+    height: 200px;
+    clear: both;
+    overflow-y: scroll;
+  }
+
+  .select-tree-body::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  .select-tree-body::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0;
+  }
 </style>

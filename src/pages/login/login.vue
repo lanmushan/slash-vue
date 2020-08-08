@@ -104,7 +104,7 @@
           loginApi.loginManage(data).then((msg) => {
             if (msg.code == 200) {
               loginApi.setToken(msg.row)
-              this.$router.push({path: 'welcome'})
+              this.$router.push({path: '/pages/home/welcome'})
             }
           }).catch((msg) => {
             this.logging = false

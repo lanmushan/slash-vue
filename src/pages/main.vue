@@ -97,6 +97,7 @@
 <script>
 import resourceApi from "@/apis/auth/authTbResourceApi.js";
 import LeftMenu from "@/components/menu/LeftMenu";
+import {loadRouter} from '@/js/asyncRouter.js'
 export default {
   components: { LeftMenu },
   data() {
@@ -116,12 +117,8 @@ export default {
   created() {
     resourceApi.selectCurrentUserMenu().then(msg => {
       if (msg.code == 200) {
-        for (let row of msg.rows) {
-          if (row.fkParentId == 0) {
-            row.childMenu = this.getChildMenu(row, msg.rows);
-            this.menuList.push(row);
-          }
-        }
+        this.menuList = msg.rows
+        loadRouter(this.menuList)
       }
     });
   },
@@ -141,20 +138,6 @@ export default {
     tabJump(obj) {
       this.jump(obj.name);
     },
-    //判断是否还有子菜单
-    getChildMenu(row, rows) {
-      var array = [];
-      if (row == undefined) {
-        return array;
-      }
-      for (var it of rows) {
-        if (it.fkParentId == row.id) {
-          it.childMenu = this.getChildMenu(it, rows);
-          array.push(it);
-        }
-      }
-      return array;
-    }
   }
 };
 </script>

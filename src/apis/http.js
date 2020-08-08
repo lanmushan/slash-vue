@@ -9,7 +9,6 @@ axios.defaults.baseURL = 'http://127.0.0.1:8080/api'
  *  在header添加authorization
  * */
 axios.interceptors.request.use(function (param) {
-  console.log(loginApi.getToken())
   if (loginApi.getToken() != undefined) {
     param.headers['authorization'] = loginApi.getToken()
   }
@@ -31,6 +30,7 @@ axios.interceptors.response.use(function (response) {
       return msg
     }
     case HttpCode.D600: {
+      loginApi.clearToken()
       window.location.href = '/'
     }
     default: {

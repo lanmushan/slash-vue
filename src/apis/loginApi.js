@@ -11,10 +11,13 @@ const loginApi = {
     return http.doPost('/authLogin/loginManage', data)
   },
   setToken: (token) => {
-    sessionStorage.setItem('token', token)
+    localStorage.setItem('token', token)
   },
   getToken: () => {
-    return sessionStorage.getItem('token')
+    return localStorage.getItem('token')
+  },
+  clearToken: () => {
+    return localStorage.removeItem('token')
   }
 }
 export default loginApi

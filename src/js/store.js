@@ -6,11 +6,11 @@ const store = new Vuex.Store({
     tab:{
       list:[{
         title:"欢迎页",
-        name:"/welcome/index",
-        path:"/welcome/index",
+        name: '/pages/home/welcome',
+        path: '/pages/home/welcome',
         content:"sdafjlasjl"
       }],
-      active:"/welcome/index"
+      active: '/pages/home/welcome'
     },
     events:[],
     count:1

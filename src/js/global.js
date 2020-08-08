@@ -2,72 +2,85 @@ import Vue from 'vue'
 import router from '../router/index'
 import store from './store'
 
-export default function(){
+export default function () {
   /**
    * 全局变量
    * @type {{}}
    */
-  Vue.prototype.app={
-    tabList:[],
-    tabActive:1
-  };
+  Vue.prototype.app = {
+    tabList: [],
+    tabActive: 1
+  }
   /**
    * 全局路由跳转
    * @param msg
    */
-  Vue.prototype.jump=function (path,title,query) {
-     activeTab(path,title)
-  };
+  Vue.prototype.jump = function (path, title, query) {
+    activeTab(path, title)
+  }
   /**
    *移除Tab
    */
-  Vue.prototype.removeTab=function (targetName) {
-    let tabs = store.state.tab.list;
-    if(targetName=="welcome")
-    {
-      return;
+  Vue.prototype.removeTab = function (targetName) {
+    let tabs = store.state.tab.list
+    if (targetName == '/home/welcome') {
+      return
     }
-    store.state.tab.list=tabs.filter(tab => tab.name !== targetName);
+
+    store.state.tab.list = tabs.filter(tab => tab.name !== targetName)
+    let index = store.state.tab.list.length - 1
+    if (index < 0) {
+      index = 0
+    }
+    let target = store.state.tab.list[index]
+
+    activeTab(target.path, target.title)
+
   },
     /**
      * 深度拷贝
      */
-  Vue.prototype.cloneDeep=function(templateData) {
-    // templateData 是要复制的数组或对象，这样的数组或者对象就是指向新的地址的
-    return JSON.parse(JSON.stringify(templateData));
+    Vue.prototype.cloneDeep = function (templateData) {
+      // templateData 是要复制的数组或对象，这样的数组或者对象就是指向新的地址的
+      return JSON.parse(JSON.stringify(templateData))
+    }
+  router.beforeEach((to, from, next) => {
+    if (to.path == from.path && to.path != '/') {
+      return
+    }
+    next()
+  })
+
+  function addRouter (path) {
+
   }
- router.beforeEach((to,from,next)=>{
-    //activeTab(to.path);
-    next();
- })
+
   //激活标签
-  function activeTab (path,title) {
+  function activeTab (path, title) {
+
     router.push({
-      path:path
+      path: path
     })
-    let existTabList=false;
-    for (let i in store.state.tab.list)
-    {
-      let tab=store.state.tab.list;
-      if(tab[i].path==path)
-      {
-          existTabList=true;
-          store.state.tab.active=path;
-          return;
-          break;
+    let existTabList = false
+    for (let i in store.state.tab.list) {
+      let tab = store.state.tab.list
+      if (tab[i].path == path) {
+        existTabList = true
+        store.state.tab.active = path
+        return
+        break
       }
     }
-    if(!existTabList)
-    {
+    if (!existTabList) {
       store.state.tab.list.push({
-        title:title,
-        path:path,
-        name:path,
+        title: title,
+        path: path,
+        name: path,
       })
-       store.state.tab.active=path;
+      store.state.tab.active = path
     }
     router.push({
-      path:path
+      path: path
     })
   }
 }
