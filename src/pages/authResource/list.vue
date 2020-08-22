@@ -39,7 +39,12 @@
                   style="width: 100%;text-align: center"
                   @sort-change="onSortTableEvent"
                 >
-                  <el-table-column prop="roleCode" label="图标" align="center" width="80"></el-table-column>
+                  <el-table-column width="50" label="序号"></el-table-column>
+                  <el-table-column prop="roleCode" label="图标" align="center" width="80">
+                    <template slot-scope="scope">
+                      <i v-html="scope.row.iconDefault" class="iconfont"></i>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="resourceName" label="资源名称" align="center" width="180"></el-table-column>
                   <el-table-column prop="resourceType" label="类型" align="center" width="60"></el-table-column>
                   <el-table-column prop="resourceUrl" label="标识符" align="center"></el-table-column>

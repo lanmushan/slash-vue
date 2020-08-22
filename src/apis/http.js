@@ -2,6 +2,7 @@ import axios from 'axios'
 import {Notification} from 'element-ui'
 import loginApi from '@/apis/loginApi.js'
 import HttpCode from '@/js/httpCode.js'
+import router from '@/router/index.js'
 
 axios.defaults.timeout = 500000
 axios.defaults.baseURL = 'http://127.0.0.1:8080/api'
@@ -31,7 +32,8 @@ axios.interceptors.response.use(function (response) {
     }
     case HttpCode.D600: {
       loginApi.clearToken()
-      window.location.href = '/'
+      router.push({path: '/login'})
+      break
     }
     default: {
       Notification.error({

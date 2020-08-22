@@ -4,8 +4,8 @@ const loginApi = {
   /**
    * 查询当前用户的
    */
-  selectVerificationCode: () => {
-    return http.doGet('/authLogin/selectVerificationCode', {})
+  selectVerificationCode: (account) => {
+    return http.doGet('/authLogin/selectVerificationCode', {account: account})
   },
   loginManage: (data) => {
     return http.doPost('/authLogin/loginManage', data)

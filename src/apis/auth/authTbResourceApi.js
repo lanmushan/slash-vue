@@ -2,7 +2,7 @@ import http from '@/apis/http.js'
 
 const authTbResourceApi = {
   /**
-   * 查询当前用户的
+   * 查询当前用户的所有菜单，如果是管理员返回所有可用菜单
    */
   selectCurrentUserMenu: () => {
     return http.doGet('/authTbResource/select/menu', {})

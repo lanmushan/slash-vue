@@ -9,13 +9,13 @@
     >
       <el-menu-item :index="i" v-for="(row,i) in menuList" :key="i" v-if="row.children.length==0">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i v-html="row.iconDefault" class="iconfont"></i>
           <span>{{row.resourceName}}</span>
         </template>
       </el-menu-item>
       <el-submenu :index="i" v-for="(row,i) in menuList" :key="i" v-if="row.children.length>0">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i v-html="row.iconDefault" class="iconfont"></i>
           <span>{{row.resourceName}}</span>
         </template>
         <el-menu-item
@@ -24,7 +24,7 @@
           v-for="(row2,j) in row.children"
           v-if="row2.children.length==0"
           :key="j"
-        >{{row2.resourceName}}
+        ><i v-html="row2.iconDefault" class="iconfont"></i> {{row2.resourceName}}
         </el-menu-item>
         <el-submenu
           :index="i+'-'+j"
@@ -32,7 +32,10 @@
           :key="j"
           v-if="row2.children.length>0"
         >
-          <template slot="title">{{row2.resourceName}}</template>
+          <template slot="title">
+            <i v-html="row2.iconDefault" class="iconfont"></i>
+            <span>{{row2.resourceName}}</span>
+          </template>
           <el-menu-item
             :index="i+'-'+j+'-'+x"
             v-for="(row3,x) in row2.children"

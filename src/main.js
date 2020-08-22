@@ -13,7 +13,7 @@ import global from './js/global'
 import './css/reset.css'
 import md5 from 'js-md5'
 import VueCodemirror from 'vue-codemirror'
-
+import '@/css/iconfont.css'
 Vue.prototype.$md5 = md5
 
 Vue.config.productionTip = false

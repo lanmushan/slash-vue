@@ -13,7 +13,7 @@
         <el-row>
           <el-col>
             <el-form-item label="上级" prop="account">
-              <select-tree></select-tree>
+              <select-tree :treeList="menuList" :props="props"></select-tree>
             </el-form-item>
           </el-col>
         </el-row>
@@ -27,8 +27,8 @@
         <el-row>
           <el-col>
             <el-form-item label="资源类型" prop="sex">
-              <el-radio v-model="updateForm.sex" :label="1" value="1">菜单</el-radio>
-              <el-radio v-model="updateForm.sex" :label="0" value="0">按钮</el-radio>
+              <el-radio v-model="updateForm.sex" :label="1" value="menu">菜单</el-radio>
+              <el-radio v-model="updateForm.sex" :label="0" value="btn">按钮</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,19 +64,24 @@
         </el-col>
       </el-row>
     </el-form>
+    <el-dialog :visible.sync="dialogVisible" title="选择图标" append-to-body>
+      <icon-select></icon-select>
+    </el-dialog>
   </div>
 </template>
 <script>
   import authTbUserApi from '@/apis/auth/authTbUserApi.js'
+  import authTbResourceApi from '@/apis/auth/authTbResourceApi.js'
   import HttpCode from '@/js/httpCode.js'
-
   export default {
     name: 'UserUpdate',
     components: {
-      SelectTree: () => import('@/components/selecttree/SelectTree.vue')
+      SelectTree: () => import('@/components/selecttree/SelectTree.vue'),
+      IconSelect: () => import('@/components/icon/iconSelect')
     },
     data () {
       return {
+        dialogVisible: true,
         updateForm: {
           id: '',
           deptId: '',
@@ -94,9 +99,10 @@
           headImgAddress: '',
           roleCodeList: []
         },
-        deptProps: {
+        menuList: [],
+        props: {
           children: 'children',
-          label: 'deptName'
+          label: 'resourceName'
         },
         rules: {
           account: [
@@ -134,9 +140,20 @@
     created () {
       //可能需要特殊处理，手动赋值
       this.updateForm = this.data
-      console.log(this.updateForm)
+      this.doSelectParentMenu()
     },
     methods: {
+      doSelectParentMenu () {
+        authTbResourceApi.selectCurrentUserMenu().then((msg) => {
+          console.log(msg.rows)
+          msg.rows.splice(0, 0, {
+            resourceName: '顶级',
+            fkParentId: 0,
+            id: 0,
+          })
+          this.menuList = msg.rows
+        })
+      },
       submitForm () {
         this.$refs['updateForm'].validate(valid => {
           if (valid) {
@@ -174,8 +191,7 @@
       },
       formError (msg) {
         if (msg.code == HttpCode.HTTP400) {
-          for (let row of msg.errors)
-          {
+          for (let row of msg.errors) {
             let fields = this.$refs['updateForm'].fields.filter(it => {
               return it.prop == row.errName
             })

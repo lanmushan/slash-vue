@@ -13,7 +13,8 @@
         </div>
         <el-form label-position="right" label-width="80px" :model="loginForm" :rules="rules" ref="loginForm">
           <el-form-item label="登录账号" prop="account">
-            <el-input v-model="loginForm.account" type="text" autocomplete="off" placeholder="请输入登录账号"></el-input>
+            <el-input v-model="loginForm.account" type="text" autocomplete="off" @blur="onAccountInputBlur"
+                      placeholder="请输入登录账号"></el-input>
           </el-form-item>
           <el-form-item label="登录密码" prop="password">
             <el-input v-model="loginForm.password" type="password" autocomplete="off" placeholder="请输入登录密码"></el-input>
@@ -35,19 +36,18 @@
 
 <script>
   import loginApi from '@/apis/loginApi.js'
-
   export default {
     data () {
       return {
-        loginBtnLabel: '立 即 登 录',
-        logging: false,
-        verificationCodeImgLoading: true,
-        verificationCodeImgSrc: '',
+        loginBtnLabel: '立 即 登 录',//登录按钮
+        logging: false,//登录状态
+        verificationCodeImgLoading: false,//验证码加载效果
+        verificationCodeImgSrc: '',//验证码路径
         verificationCodeUid: '',
         loginForm: {
-          account: 'admin',
-          password: '123456',
-          verificationCode: '1111'
+          account: 'admin',//登录账号
+          password: '123456',//登录密码
+          verificationCode: '1111'//验证码
         },
         rules: {
           account: [
@@ -63,7 +63,7 @@
       }
     },
     created () {
-      this.doRefreshVerificationCode()
+
     },
     methods: {
       /**
@@ -71,7 +71,12 @@
        */
       onLoginBtnEvent () {
         this.doLogin()
-        /*  this.$router.push({path: '/welcome'})*/
+      },
+      /**
+       *登录输入框失去焦点事件
+       * */
+      onAccountInputBlur () {
+        this.doRefreshVerificationCode()
       },
       /**
        * 刷新验证码事件
@@ -84,7 +89,7 @@
        */
       doRefreshVerificationCode () {
         this.verificationCodeImgLoading = true
-        loginApi.selectVerificationCode().then((msg) => {
+        loginApi.selectVerificationCode(this.loginForm.account).then((msg) => {
           setTimeout(() => {
             this.verificationCodeImgSrc = msg.row.img
             this.verificationCodeUid = msg.row.uid
@@ -115,9 +120,6 @@
           })
         })
       }
-    },
-    mounted () {
-
     },
     watch: {},
   }
