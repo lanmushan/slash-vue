@@ -2864,7 +2864,7 @@
         <div class="code-name">&amp;#xe808;</div>
       </li>
 
-      <li class="dib">
+      <li class="dib" @click="onSelectIcon('&#xe809;')">
         <span class="icon iconfont">&#xe809;</span>
         <div class="name">land transportation</div>
         <div class="code-name">&amp;#xe809;</div>
@@ -2879,14 +2879,8 @@
       this.clickBind()
     },
     methods: {
-      clickBind () {
-        let elms = document.querySelectorAll('.icon_lists.dib-box li.dib')
-        console.log(elms)
-        for (let i = 0; i < elms.length; i++) {
-          // elms[i].removeEventListener("click").addEventListener("click",()=>{
-          //   alert(11);
-          // })
-        }
+      onSelectIcon (code) {
+        alert(code)
       }
     }
   }

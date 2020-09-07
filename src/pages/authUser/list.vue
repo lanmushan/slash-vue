@@ -352,6 +352,8 @@ export default {
           this.queryParam.currentPage = msg.currentPage;
           this.loading = false;
         }, 200);
+      }).catch(() => {
+        this.loading = false
       });
     }
   },
